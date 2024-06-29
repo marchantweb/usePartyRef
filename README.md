@@ -6,7 +6,7 @@ It transforms any local reactive state into a shared state across all connected 
 
 Under the hood, it's using [PartyKit](https://www.partykit.io/) websockets, based on [CloudFlare Durable Objects](https://developers.cloudflare.com/durable-objects/) to keep values in sync.
 
-## Installation
+## 📦 Installation
 
 Install `usePartyRef` via npm by running:
 
@@ -16,7 +16,7 @@ npm install usepartyref
 
 ---
 
-## Usage
+## 🚀 Usage
 
 Below is a comparison of using Vue's native `ref()` versus `usePartyRef()` to illustrate how you can seamlessly convert local state into a shared state:
 
@@ -50,3 +50,17 @@ watch(count, (newValue, oldValue) => {
 const doubledCount = computed(() => count.value * 2)
 
 ```
+
+## 🔗 Links
+
+- [PartyKit](https://partykit.io/)
+- [Follow on Twitter](https://twitter.com/marchantweb)
+- [Chat on Discord](https://discord.gg/hKyfDAddsK)
+
+---
+
+## 📄 License
+
+Copyright (c) 2024 Simon Le Marchant _(Marchant Web, LLC.)_
+
+`usePartyRef` is licensed under the [MIT License](https://github.com/vuexyz/vuexyz/blob/main/LICENSE). Licensed works, modifications, and larger works may be distributed under different terms and without source code.
