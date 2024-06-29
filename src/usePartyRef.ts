@@ -20,7 +20,7 @@ export default function usePartyRef(value: any): Ref<any> {
     })
 
     watch(localData, (newValue) => {
-        connection.send(JSON.stringify({type: "set", data: newValue}))
+        connection.send(JSON.stringify({data: newValue}))
     })
 
     return localData

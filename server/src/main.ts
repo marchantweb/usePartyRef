@@ -10,12 +10,8 @@ export default class UsePartyRefServer implements Party.Server {
     }
 
     onMessage(message: string, sender: Party.Connection) {
-
-        const messageData: { type: ('set' | 'get'), data: any } = JSON.parse(message)
-
-        if (messageData.type === 'set') {
-            this.room.broadcast(JSON.stringify(messageData.data), [sender.id])
-        }
+        const messageData: { data: any } = JSON.parse(message)
+        this.room.broadcast(JSON.stringify(messageData.data), [sender.id])
     }
 }
 
