@@ -1,14 +1,17 @@
 import {ref, Ref, watch} from "vue"
 import PartySocket from "partysocket"
 
+interface Config{
+    default: any;
+}
+
 /**
  * A Vue 3 ref that syncs in real-time with other clients using PartyKit.
  * @docs https://github.com/marchantweb/usePartyRef
- * @param value
  */
-export default function usePartyRef(value: any): Ref<any> {
+export default function usePartyRef(config: Config): Ref<any> {
 
-    const localData: Ref<any> = ref(value)
+    const localData: Ref<any> = ref(config.default ?? undefined)
 
     const connection = new PartySocket({
         host: "localhost:1999",

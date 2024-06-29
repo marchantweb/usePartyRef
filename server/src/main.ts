@@ -9,8 +9,14 @@ export default class UsePartyRefServer implements Party.Server {
         this.room = room
     }
 
+    async onConnect(connection: Party.Connection) {
+        const currentValue = await this.room.storage.get("currentValue")
+        connection.send(JSON.stringify(currentValue))
+    }
+
     onMessage(message: string, sender: Party.Connection) {
         const messageData: { data: any } = JSON.parse(message)
+        this.room.storage.put("currentValue", messageData.data)
         this.room.broadcast(JSON.stringify(messageData.data), [sender.id])
     }
 }
