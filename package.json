@@ -15,7 +15,8 @@
     }
   },
   "scripts": {
-    "dev": "vite --host --open",
+    "dev": "concurrently npm:dev:server npm:dev:playground",
+    "dev:playground": "vite --host --open",
     "build": "vite build",
     "preview": "vite preview",
     "build:lib": "vite build --mode library",
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@types/node": "^20.14.9",
     "@vitejs/plugin-vue": "^5.0.5",
+    "concurrently": "^8.2.2",
     "typescript": "^5.2.2",
     "vite": "^5.3.1",
     "vite-plugin-dts": "^3.9.1",
