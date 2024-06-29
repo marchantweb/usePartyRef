@@ -15,7 +15,7 @@
     }
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host --open",
     "build": "vite build",
     "preview": "vite preview",
     "build:lib": "vite build --mode library",
