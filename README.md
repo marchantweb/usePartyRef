@@ -14,6 +14,8 @@ Install `usePartyRef` via npm by running:
 npm install usepartyref
 ```
 
+---
+
 ## Usage
 
 Below is a comparison of using Vue's native `ref()` versus `usePartyRef()` to illustrate how you can seamlessly convert local state into a shared state:
@@ -28,8 +30,6 @@ const count: Ref<number> = usePartyRef(0)
 
 ```
 With `usePartyRef()`, the count state is synchronized in real time across all clients that subscribe to it.
-
----
 
 ### Seamless integration w/ the rest of Vue's reactivity system
 
