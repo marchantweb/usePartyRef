@@ -29,6 +29,8 @@ const count: Ref<number> = usePartyRef(0)
 ```
 With `usePartyRef()`, the count state is synchronized in real time across all clients that subscribe to it.
 
+---
+
 ### Seamless integration w/ the rest of Vue's reactivity system
 
 `usePartyRef` returns a `Ref` object, which means it can be used seamlessly with other Vue 3 features such as watchers, computed properties, and bindings within your components. Let's take a look...
