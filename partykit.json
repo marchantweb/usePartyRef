@@ -1,0 +1,7 @@
+{
+  "$schema": "https://www.partykit.io/schema.json",
+  "name": "usepartyref",
+  "domain": "usepartyref.marchantweb.com",
+  "main": "server/src/main.ts",
+  "compatibilityDate": "2024-06-29"
+}

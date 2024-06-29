@@ -19,9 +19,13 @@
     "build": "vite build",
     "preview": "vite preview",
     "build:lib": "vite build --mode library",
-    "publish:lib": "build:lib && npm publish --access public"
+    "publish:lib": "build:lib && npm publish --access public",
+    "dev:server": "partykit dev --live",
+    "dev:deploy": "partykit deploy"
   },
   "dependencies": {
+    "partykit": "^0.0.107",
+    "partysocket": "^1.0.1",
     "vue": "^3.4.29"
   },
   "devDependencies": {
