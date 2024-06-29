@@ -18,8 +18,7 @@ const count: Ref<number> = usePartyRef(0)
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>
     <p>
-      Open another browser tab to see <code>count</code> remain in sync across all connected clients. Keep in mind, you
-      may not be the only person playing with this demo!
+      Open another browser tab to see <code>count</code> remain in sync across all connected clients.
     </p>
   </div>
 </template>
