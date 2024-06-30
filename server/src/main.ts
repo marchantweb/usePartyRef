@@ -11,7 +11,9 @@ export default class UsePartyRefServer implements Party.Server {
 
     async onConnect(connection: Party.Connection) {
         const currentValue = await this.room.storage.get("currentValue")
-        connection.send(JSON.stringify(currentValue))
+        if (currentValue) {
+            connection.send(JSON.stringify(currentValue))
+        }
     }
 
     onMessage(message: string, sender: Party.Connection) {
