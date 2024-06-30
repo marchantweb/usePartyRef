@@ -15,14 +15,14 @@
     }
   },
   "scripts": {
-    "dev": "concurrently npm:dev:server npm:dev:playground",
+    "dev": "concurrently npm:server:dev npm:dev:playground",
     "dev:playground": "vite --host --open",
     "build": "vite build",
     "preview": "vite preview",
     "build:lib": "vite build --mode library",
     "publish:lib": "build:lib && npm publish --access public",
-    "dev:server": "partykit dev --live",
-    "dev:deploy": "partykit deploy"
+    "server:dev": "partykit dev --live",
+    "server:deploy": "partykit deploy"
   },
   "dependencies": {
     "partykit": "^0.0.107",
