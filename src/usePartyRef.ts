@@ -2,10 +2,16 @@ import {ref, Ref, UnwrapRef, watch} from "vue"
 import PartySocket from "partysocket"
 
 interface PartyRefConfig<T> {
+    // The ID of the variable, used to identify it in the PartyKit room.
     id: string,
+    // The name of the PartyKit room to use as the server.
     namespace: string,
+    // The initial value of the ref, if it's never been set before.
     defaultValue: T
-
+    // How long until the ref resets to the default value after it is last set.
+    expires?: number,
+    // The host of the PartyKit server.
+    host?: string
 }
 
 /**
@@ -17,8 +23,8 @@ export default function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
     const localData: Ref<UnwrapRef<T>> = ref(config.defaultValue) as Ref<UnwrapRef<T>>
 
     const connection = new PartySocket({
-        host: "localhost:1999",
-        room: config.namespace ?? "demo-room"
+        host: config.host ?? "localhost:1999",
+        room: config.namespace
     })
 
     connection.addEventListener("message", (event) => {

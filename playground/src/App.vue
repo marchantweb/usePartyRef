@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import {usePartyRef} from '../../src/index'
-import {Ref} from "vue";
+import {computed, ComputedRef, Ref} from "vue";
 
-const count: Ref<number> = usePartyRef(0)
+const count: Ref<number> = usePartyRef({
+  id: "count",
+  namespace: "participants",
+  defaultValue: 0
+})
+
+const double: ComputedRef<number> = computed(() => count.value * 2)
 </script>
 
 <template>
@@ -17,6 +23,7 @@ const count: Ref<number> = usePartyRef(0)
   <h1>usePartyRef</h1>
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>
+    <p><strong>Computed double: {{ double }} </strong></p>
     <p>
       Open another browser tab to see <code>count</code> remain in sync across all connected clients.
     </p>
