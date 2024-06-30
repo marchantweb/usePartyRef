@@ -74,7 +74,7 @@ const doubledCount = computed(() => count.value * 2)
 synchronization of state across clients. This means you don't need to worry about setting up your own server or managing
 the infrastructure.
 
-By default, `usePartyRef` uses the PartyKit server hosted by the package author. This is great for getting started quickly, but it's not recommended for production use.
+By default, `usePartyRef` uses the PartyKit server hosted by the package author at `usepartyref.marchantweb.partykit.dev`. This is great for getting started quickly, but it's not recommended for production use.
 
 Running the PartyKit server on your own PK account is a simple as forking this repo, running `server:deploy` with your
 own PartyKit credentials, and configuring the `usePartyRef` composable to point at it by setting the `host` option:
@@ -84,7 +84,7 @@ const count: Ref<number> = usePartyRef({
     project: 'my-project',
     name: "count",
     defaultValue: 0,
-    host: 'https://[projectname].[username].partykit.dev'
+    host: '[projectname].[username].partykit.dev'
 })
 ```
 
