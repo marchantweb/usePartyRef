@@ -4,10 +4,10 @@ import PartySocket from "partysocket"
 interface PartyRefConfig<T> {
 
     // Creates a namespace to keep your data separate from other projects, such as "my-project". Try to make this as unique as possible to avoid conflicts with other projects.
-    project: string,
+    namespace: string,
 
     // The name of the variable, such as "count".
-    name: string,
+    key: string,
 
     // The initial value of the ref, if it's never been set before.
     defaultValue: T
@@ -47,7 +47,7 @@ export default function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
         // Initialize the connection
         connection = new PartySocket({
             host: config.host ?? (isDevelopment() ? "localhost:1999" : "https://usepartyref.marchantweb.partykit.dev"),
-            room: config.project
+            room: config.namespace
         })
 
         // Listen for incoming updates from other clients
@@ -58,7 +58,10 @@ export default function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
         // Watch the local data for changes and send it to other clients
         watch(localData, (newValue) => {
             if (connection) {
-                connection.send(JSON.stringify({data: newValue}))
+                connection.send(JSON.stringify({
+                    key: config.namespace,
+                    data: newValue
+                }))
             }
         })
     })

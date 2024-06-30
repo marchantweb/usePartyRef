@@ -3,8 +3,8 @@ import {usePartyRef} from '../../src/index'
 import {computed, ComputedRef, Ref} from "vue";
 
 const count: Ref<number> = usePartyRef({
-  project: "participants",
-  name: "count",
+  namespace: "usepartyref-playground",
+  key: "count",
   defaultValue: 0
 })
 

@@ -33,8 +33,8 @@ const count: Ref<number> = ref(0)
 
 // Use usePartyRef() for shared state
 const sharedCount: Ref<number> = usePartyRef({
-    project: 'my-project', // Choose something unique
-    name: "count",
+    namespace: 'my-project', // Choose something unique
+    key: "count",
     defaultValue: 0
 })
 
@@ -63,8 +63,8 @@ By default, `usePartyRef` uses the PartyKit server hosted on the package author'
 
 ```ts
 const count: Ref<number> = usePartyRef({
-    project: 'my-project',
-    name: "count",
+    namespace: 'my-project',
+    key: "count",
     defaultValue: 0,
     host: '[projectname].[username].partykit.dev' // server:deploy will give you this URL
 })
