@@ -22,7 +22,7 @@ const double: ComputedRef<number> = computed(() => count.value * 2)
   </div>
   <h1>usePartyRef</h1>
   <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
+    <button type="button" @click="count++">count is {{ count }}</button><button type="button" @click="count = 0">reset</button>
     <p><strong>Computed double: {{ double }} </strong></p>
     <p>
       Open another browser tab to see <code>count</code> remain in sync across all connected clients.
