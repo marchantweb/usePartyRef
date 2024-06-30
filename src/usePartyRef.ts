@@ -50,6 +50,13 @@ export default function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
             room: config.namespace
         })
 
+        // Request the current state from the server, if it's different from the default value
+        connection.send(JSON.stringify({
+            operation: "read",
+            key: config.key,
+            data: config.defaultValue
+        }))
+
         // Listen for incoming updates from other clients
         connection.addEventListener("message", (event) => {
             localData.value = JSON.parse(event.data)
@@ -59,7 +66,8 @@ export default function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
         watch(localData, (newValue) => {
             if (connection) {
                 connection.send(JSON.stringify({
-                    key: config.namespace,
+                    operation: "write",
+                    key: config.key,
                     data: newValue
                 }))
             }
