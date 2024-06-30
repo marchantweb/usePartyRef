@@ -41,7 +41,7 @@ const double: ComputedRef<number> = computed(() => count.value * 2)
 }
 
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em rgba(255, 100, 100, 0.67));
 }
 
 .logo.vue:hover {
