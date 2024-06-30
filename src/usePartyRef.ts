@@ -1,21 +1,24 @@
-import {ref, Ref, watch} from "vue"
+import {ref, Ref, UnwrapRef, watch} from "vue"
 import PartySocket from "partysocket"
 
-interface Config{
-    default: any;
+interface PartyRefConfig<T> {
+    id: string,
+    namespace: string,
+    defaultValue: T
+
 }
 
 /**
  * A Vue 3 ref that syncs in real-time with other clients using PartyKit.
  * @docs https://github.com/marchantweb/usePartyRef
  */
-export default function usePartyRef(config: Config): Ref<any> {
+export default function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
 
-    const localData: Ref<any> = ref(config.default ?? undefined)
+    const localData: Ref<UnwrapRef<T>> = ref(config.defaultValue) as Ref<UnwrapRef<T>>
 
     const connection = new PartySocket({
         host: "localhost:1999",
-        room: "demo-room"
+        room: config.namespace ?? "demo-room"
     })
 
     connection.addEventListener("message", (event) => {
@@ -26,5 +29,5 @@ export default function usePartyRef(config: Config): Ref<any> {
         connection.send(JSON.stringify({data: newValue}))
     })
 
-    return localData
+    return localData as Ref<T>
 }
