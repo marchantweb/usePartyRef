@@ -10,7 +10,7 @@ build multiplayer interactive experiences using the Vue lifecycle hooks you're f
 can `watch` it, bind it to inputs, run a `computed` on it, etc.
 
 Under the hood, it's using [PartyKit](https://www.partykit.io/) stateful servers and websockets, based
-on [CloudFlare Durable Objects](https://developers.cloudflare.com/durable-objects/) to keep values in sync and persist them beyond the life of the browser window. The library is written in TypeScript and is fully type-safe.
+on [CloudFlare Durable Objects](https://developers.cloudflare.com/durable-objects/), to keep values in sync and persist them beyond the life of the browser window. The library is written in TypeScript and is fully type-safe.
 
 ## 📦 Installation
 
@@ -43,7 +43,7 @@ const doubled = computed(() => sharedCount.value * 2)
 ```
 
 With `usePartyRef()`, the count state is synchronized in real time across all clients that subscribe to it. That might
-be two browser tabs on your local machine, or another computer on the other side of the planet.
+be two browser tabs on your local machine, or thousands of users all over the world.
 
 ---
 
