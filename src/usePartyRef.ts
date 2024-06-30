@@ -1,4 +1,4 @@
-import {ref, Ref, UnwrapRef, watch} from "vue"
+import {onMounted, onUnmounted, ref, Ref, UnwrapRef, watch} from "vue"
 import PartySocket from "partysocket"
 
 interface PartyRefConfig<T> {
@@ -16,25 +16,57 @@ interface PartyRefConfig<T> {
     host?: string
 }
 
+function isDevelopment(): boolean {
+    // Vite
+    // @ts-ignore
+    if (import.meta.env?.MODE === 'development') {
+        return true;
+    }
+    // Node
+    if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
+        return true;
+    }
+    // Webpack
+    if (process.env.NODE_ENV === 'development') {
+        return true;
+    }
+    return false;
+}
+
 /**
  * A Vue 3 ref that syncs in real-time with other clients using PartyKit.
  * @docs https://github.com/marchantweb/usePartyRef
  */
 export default function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
 
+    let connection: PartySocket | null
     const localData: Ref<UnwrapRef<T>> = ref(config.defaultValue) as Ref<UnwrapRef<T>>
 
-    const connection = new PartySocket({
-        host: config.host ?? "localhost:1999",
-        room: config.project
+    onMounted(() => {
+
+        // Initialize the connection
+        connection = new PartySocket({
+            host: config.host ?? (isDevelopment() ? "localhost:1999" : "https://usepartyref.marchantweb.partykit.dev"),
+            room: config.project
+        })
+
+        // Listen for incoming updates from other clients
+        connection.addEventListener("message", (event) => {
+            localData.value = JSON.parse(event.data)
+        })
+
+        // Watch the local data for changes and send it to other clients
+        watch(localData, (newValue) => {
+            if (connection) {
+                connection.send(JSON.stringify({data: newValue}))
+            }
+        })
     })
 
-    connection.addEventListener("message", (event) => {
-        localData.value = JSON.parse(event.data)
-    })
-
-    watch(localData, (newValue) => {
-        connection.send(JSON.stringify({data: newValue}))
+    onUnmounted(() => {
+        if (connection) {
+            connection.close()
+        }
     })
 
     return localData as Ref<T>
