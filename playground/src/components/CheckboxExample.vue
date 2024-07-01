@@ -4,8 +4,8 @@ import {computed, ComputedRef, Ref} from "vue";
 
 const checkboxes: Ref<boolean[]> = usePartyRef({
   namespace: "usepartyref-playground",
-  key: "checkboxes",
-  defaultValue: [false, false, false, false, false, false, false, false, false, false]
+  key: "100-checkboxes",
+  defaultValue: Array(100).fill(false)
 })
 
 const totalChecked: ComputedRef<number> = computed(() => checkboxes.value.filter(Boolean).length)
@@ -13,11 +13,10 @@ const totalChecked: ComputedRef<number> = computed(() => checkboxes.value.filter
 
 <template>
   <div class="card">
-    <div v-for="(value, index) in checkboxes" :key="index">
-      <input type="checkbox" v-model="checkboxes[index]" />
-      {{ index + 1 }}
+    <div class="checkboxes">
+      <input type="checkbox" v-for="(value, index) in checkboxes" v-model="checkboxes[index]"/>
     </div>
-    <p><strong>Total checked boxes: {{ totalChecked }} </strong></p>
+    <p><strong>Total checked boxes: {{ totalChecked }} / {{ checkboxes.length }} </strong></p>
     <p>
       Everyone visiting this website can check/uncheck these checkboxes in real-time.
     </p>
@@ -25,5 +24,14 @@ const totalChecked: ComputedRef<number> = computed(() => checkboxes.value.filter
 </template>
 
 <style scoped>
+.checkboxes{
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-gap: 1rem;
+}
 
+input[type="checkbox"]{
+  width: 1.3rem;
+  height: 1.3rem;
+}
 </style>
