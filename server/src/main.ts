@@ -14,7 +14,7 @@ export default class UsePartyRefServer implements Party.Server {
 
         if (messageData.operation === "write") {
             const localData = await this.room.storage.get(messageData.key)
-            if(localData === messageData.data) return
+            if(JSON.stringify(localData) === JSON.stringify(messageData.data)) return
             await this.room.storage.put(messageData.key, messageData.data)
             this.room.broadcast(JSON.stringify(messageData.data), [sender.id])
         } else if (messageData.operation === "read") {
