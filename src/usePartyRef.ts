@@ -59,6 +59,7 @@ export default function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
 
         // Listen for incoming updates from other clients
         connection.addEventListener("message", (event) => {
+            if (JSON.stringify(localData.value) === event.data) return
             localData.value = JSON.parse(event.data)
         })
 
@@ -71,7 +72,7 @@ export default function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
                     data: newValue
                 }))
             }
-        })
+        }, {deep: true})
     })
 
     onUnmounted(() => {
