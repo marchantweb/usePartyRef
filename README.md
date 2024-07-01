@@ -76,6 +76,18 @@ the [PartyKit documentation](https://docs.partykit.io/guides/deploy-to-cloudflar
 
 ---
 
+## What about Y-PartyKit / Yjs?
+
+[Y-PartyKit](https://docs.partykit.io/reference/y-partykit-api/) is a similar project that uses [Yjs](https://yjs.dev/) for real-time collaboration around shared data types. Both `usePartyRef` and `Y-PartyKit` are built on top of PartyKit, but they have different use cases and levels of involvement/complexity.
+
+`usePartyRef` is designed to be a drop-in replacement for Vue's `ref()` that allows you to share reactive state across clients. It's a simple, high-level API that removes the need for you to worry about the underlying data structures and synchronization logic. It just works out of the box with no setup required.
+
+`Y-PartyKit` is a more complex, lower-level API that allows you to share any data type across clients. It's built on top of Yjs, which is a CRDT library that allows for more complex data structures like maps, arrays, and text. It's great for more complex data structures and collaborative editing.
+
+If you're looking for a simple way to share reactive state across clients, `usePartyRef` is the way to go. If you need more complex data structures or collaborative editing, `Y-PartyKit` might be a better fit.
+
+---
+
 ## 📚 Contributions
 
 Contributions are welcome! Feel free to open an issue or submit a pull request if you have any ideas or improvements.
