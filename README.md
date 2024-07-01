@@ -47,7 +47,7 @@ be two browser tabs on your local machine, or thousands of users all over the wo
 
 ---
 
-## 💪 Managed vs. Self-Hosting
+## 🎈 Managed vs. Self-Hosting
 
 `usePartyRef` is built on top of [PartyKit](https://www.partykit.io/), a managed service that handles the real-time
 synchronization of state across clients. This means you don't need to worry about setting up your own server or managing
