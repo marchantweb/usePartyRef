@@ -37,7 +37,7 @@ function isDevelopment(): boolean {
  * A Vue 3 ref that syncs in real-time with other clients using PartyKit.
  * @docs https://github.com/marchantweb/usePartyRef
  */
-export default function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
+export function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
 
     let connection: PartySocket | null
     const localData: Ref<UnwrapRef<T>> = ref(config.defaultValue) as Ref<UnwrapRef<T>>

@@ -1,1 +1,1 @@
-export { default as usePartyRef } from './usePartyRef'
+export { usePartyRef } from './usePartyRef'
