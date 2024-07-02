@@ -4,10 +4,10 @@ import RateLimiterMemory from "rate-limiter-flexible/lib/RateLimiterMemory.js"
 // Set the maximum message size to 128 KB
 const MAX_MESSAGE_SIZE = 1024 * 512
 
-// Rate limit the server to 10 requests/sec per client, as the average over 2 minute intervals
+// Rate limit the server to 20 requests/sec per client, as the average over 2 minute intervals
 const RATE_LIMITER_OPTS = {
     points: 1200,
-    duration: 120,
+    duration: 60,
 }
 
 export default class UsePartyRefServer implements Party.Server {

@@ -60,7 +60,12 @@ export function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
         // Listen for incoming updates from other clients
         connection.addEventListener("message", (event) => {
             if (JSON.stringify(localData.value) === event.data) return
-            localData.value = JSON.parse(event.data)
+            const remoteData = JSON.parse(event.data)
+            if (!('error' in remoteData)) {
+                localData.value = remoteData
+                return
+            }
+            console.error(remoteData.error)
         })
 
         // Watch the local data for changes and send it to other clients
