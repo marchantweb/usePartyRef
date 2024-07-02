@@ -4,7 +4,7 @@ import {computed, ComputedRef, Ref} from "vue";
 
 const checkboxes: Ref<boolean[]> = usePartyRef({
   namespace: "usepartyref-playground",
-  key: "100-checkboxes",
+  key: "checkboxes",
   defaultValue: Array(100).fill(false)
 })
 
