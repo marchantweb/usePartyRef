@@ -1,6 +1,7 @@
 import type * as Party from "partykit/server"
+import { RateLimiterMemory } from "rate-limiter-flexible"
 
-const MAX_MESSAGE_SIZE = 1024 * 1024 // 1MB
+const MAX_MESSAGE_SIZE = 1024 * 512 // 128 KB
 
 export default class UsePartyRefServer implements Party.Server {
     options: Party.ServerOptions = {
