@@ -1,6 +1,6 @@
 # usePartyRef
 
-![usePartyRef](cover.jpg)
+![usePartyRef](https://github.com/marchantweb/usePartyRef/raw/main/cover.jpg)
 
 `usePartyRef()` is a Vue 3 composable that extends the functionality of the standard `ref()` to enable real-time,
 synchronized state across multiple clients globally.
