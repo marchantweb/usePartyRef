@@ -50,7 +50,7 @@ export default function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
             room: config.namespace
         })
 
-        // Request the current state from the server, if it's different from the default value
+        // Request the current state from the server, or reset it if we're the first client
         connection.send(JSON.stringify({
             operation: "read",
             key: config.key,

@@ -1,5 +1,7 @@
 import type * as Party from "partykit/server"
 
+const MAX_MESSAGE_SIZE = 1024 * 1024 // 1MB
+
 export default class UsePartyRefServer implements Party.Server {
     options: Party.ServerOptions = {
         hibernate: true
@@ -15,33 +17,86 @@ export default class UsePartyRefServer implements Party.Server {
      * @param sender
      */
     async onMessage(message: string, sender: Party.Connection) {
-        const messageData: { operation: string, key: string, data?: any } = JSON.parse(message)
+        if (message.length > MAX_MESSAGE_SIZE) {
+            sender.send(JSON.stringify({error: "Message too large"}))
+            return
+        }
+
+        let messageData: { operation: string, key: string, data?: any }
+        try {
+            messageData = JSON.parse(message)
+        } catch (error) {
+            sender.send(JSON.stringify({error: "Invalid JSON"}))
+            return
+        }
+
+        if (!this.isValidOperation(messageData)) {
+            sender.send(JSON.stringify({error: "Invalid operation"}))
+            return
+        }
+
+        const sanitizedKey = await this.sanitizeKey(messageData.key)
 
         if (messageData.operation === "write") {
-            const localData = await this.room.storage.get(messageData.key)
-            if (JSON.stringify(localData) === JSON.stringify(messageData.data)) return
-            await this.room.storage.put(messageData.key, messageData.data)
-            this.room.broadcast(JSON.stringify(messageData.data), [sender.id])
+            await this.handleWrite(sanitizedKey, messageData.data, sender)
         } else if (messageData.operation === "read") {
-            const remoteData = await this.room.storage.get(messageData.key)
-            if (remoteData !== undefined && JSON.stringify(remoteData) !== JSON.stringify(messageData.data)) {
-                sender.send(JSON.stringify(remoteData))
+            if ([...this.room.getConnections()].length === 1) {
+                await this.handleWrite(sanitizedKey, messageData.data, sender)
+            } else {
+                await this.handleRead(sanitizedKey, messageData.data, sender)
             }
         }
     }
 
     /**
-     * Delete all data associated with this room when the last connection closes
-     * @param connection
+     * Store a key-value pair in the storage and broadcast the change to all other connections
+     * @param key
+     * @param data
+     * @param sender
+     * @private
      */
-    async onClose(connection: Party.Connection) {
-        if ([...this.room.getConnections()].length === 0) {
-            const roomData = [...(await this.room.storage.list()).keys()]
-            for (const key of roomData) {
-                await this.room.storage.delete(key)
-            }
+    private async handleWrite(key: string, data: any, sender: Party.Connection) {
+        const localData = await this.room.storage.get(key)
+        if ((JSON.stringify(localData) === JSON.stringify(data))) return
+        await this.room.storage.put(key, data)
+        this.room.broadcast(JSON.stringify(data), [sender.id])
+    }
+
+    /**
+     * Retrieve a key-value pair from the storage and send it back to the requesting client
+     * @param key
+     * @param clientData
+     * @param sender
+     * @private
+     */
+    private async handleRead(key: string, clientData: any, sender: Party.Connection) {
+        const remoteData = await this.room.storage.get(key)
+        if (remoteData !== undefined && JSON.stringify(remoteData) !== JSON.stringify(clientData)) {
+            sender.send(JSON.stringify(remoteData))
         }
     }
+
+    /**
+     * Check if the message is a valid operation (read or write)
+     * @param data
+     * @private
+     */
+    private isValidOperation(data: any): boolean {
+        return (
+            data &&
+            typeof data.operation === "string" &&
+            ["read", "write"].includes(data.operation) &&
+            typeof data.key === "string" &&
+            (data.operation === "read" || data.data !== undefined)
+        )
+    }
+
+    /**
+     * Sanitize input keys
+     * @param key
+     * @private
+     */
+    private sanitizeKey = (key) => key.replace(/[^\w.-]/g, '_').substr(0, 2047)
 }
 
 UsePartyRefServer satisfies Party.Worker
