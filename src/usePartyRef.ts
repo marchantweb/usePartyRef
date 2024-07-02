@@ -41,6 +41,7 @@ export function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
 
     let connection: PartySocket | null
     const localData: Ref<UnwrapRef<T>> = ref(config.defaultValue) as Ref<UnwrapRef<T>>
+    const lastReceivedData: Ref<any> | Ref<null> = ref(null)
 
     onMounted(() => {
 
@@ -62,7 +63,8 @@ export function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
             if (JSON.stringify(localData.value) === event.data) return
             const remoteData = JSON.parse(event.data)
             if (!('error' in remoteData)) {
-                localData.value = remoteData
+                lastReceivedData.value = structuredClone(remoteData)
+                localData.value = structuredClone(remoteData)
                 return
             }
             console.error(remoteData.error)
@@ -70,7 +72,7 @@ export function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
 
         // Watch the local data for changes and send it to other clients
         watch(localData, (newValue) => {
-            if (connection) {
+            if (connection && (JSON.stringify(newValue) !== JSON.stringify(lastReceivedData.value))) {
                 connection.send(JSON.stringify({
                     operation: "write",
                     key: config.key,

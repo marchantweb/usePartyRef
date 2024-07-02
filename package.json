@@ -1,9 +1,10 @@
 {
   "name": "usepartyref",
-  "version": "1.0.47",
+  "version": "1.0.48",
   "license": "MIT",
   "author": "Simon Le Marchant<https://github.com/marchantweb>",
-  "homepage": "https://github.com/marchantweb/usePartyRef",
+  "homepage": "https://usepartyref.pages.dev/",
+  "repository": "https://github.com/marchantweb/usePartyRef",
   "sideEffects": false,
   "type": "module",
   "files": [
