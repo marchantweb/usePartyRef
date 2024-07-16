@@ -98,7 +98,7 @@ Contributions are welcome! Feel free to open an issue or submit a pull request i
 
 - [PartyKit](https://partykit.io/)
 - [Follow on Twitter](https://twitter.com/marchantweb)
-- [Chat on Discord](https://discord.gg/hKyfDAddsK)
+- [Chat on Discord](https://discordapp.com/users/1165287468568944640)
 
 ---
 
