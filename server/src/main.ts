@@ -76,7 +76,10 @@ export default class UsePartyRefServer implements Party.Server {
         const localData = await this.room.storage.get(key)
         if ((JSON.stringify(localData) === JSON.stringify(data))) return
         await this.room.storage.put(key, data)
-        this.room.broadcast(JSON.stringify(data), [sender.id])
+        this.room.broadcast(JSON.stringify({
+            key,
+            data
+        }), [sender.id])
     }
 
     /**
@@ -89,7 +92,10 @@ export default class UsePartyRefServer implements Party.Server {
     private async handleRead(key: string, clientData: any, sender: Party.Connection) {
         const remoteData = await this.room.storage.get(key)
         if (remoteData !== undefined && JSON.stringify(remoteData) !== JSON.stringify(clientData)) {
-            sender.send(JSON.stringify(remoteData))
+            sender.send(JSON.stringify({
+                key,
+                data: remoteData
+            }))
         }
     }
 
