@@ -45,6 +45,19 @@ const doubled = computed(() => sharedCount.value * 2)
 With `usePartyRef()`, the count state is synchronized in real time across all clients that subscribe to it. That might
 be two browser tabs on your local machine, or thousands of users all over the world.
 
+### Ready State
+
+A special note here is that the ref returned by `usePartyRef` is actually a `PartyRef` type. This type extends `Ref` adding a `ready` property that is a `Ref<boolean>`. This property is `true` when the connection is established and the value is ready to be used, and `false` when the connection closes.
+
+You can watch this property to know when the value is ready to be used:
+
+```ts
+// If you need to know when the connection is established
+const isReady: ComputedRef<boolean> = computed(() => sharedCount.ready.value)
+````
+
+Note that trying to access this property in a template will fail, as Vue automatically unwraps the value - so instead use a computed variable such as `isReady` above.
+
 ---
 
 ## 🎈 Managed vs. Self-Hosting

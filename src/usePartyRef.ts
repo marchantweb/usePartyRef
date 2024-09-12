@@ -1,7 +1,7 @@
 import {onBeforeMount, onUnmounted, ref, Ref, UnwrapRef, watch} from "vue"
 import PartySocket from "partysocket"
 
-interface PartyRefConfig<T> {
+export interface PartyRefConfig<T> {
 
     // Creates a namespace to keep your data separate from other projects, such as "my-project". Try to make this as unique as possible to avoid conflicts with other projects.
     namespace: string,
