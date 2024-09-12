@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import {usePartyRef} from '../../../src/index'
-import {computed, ComputedRef, Ref} from "vue";
+import {usePartyRef, PartyRef} from '../../../src/index'
+import {computed, ComputedRef} from "vue";
 
-const checkboxes: Ref<boolean[]> = usePartyRef({
+const checkboxes: PartyRef<boolean[]> = usePartyRef({
   namespace: "usepartyref-playground",
   key: "checkboxes-v2",
   defaultValue: Array(100).fill(false)
 })
 
 const totalChecked: ComputedRef<number> = computed(() => checkboxes.value.filter(Boolean).length)
+const isReady: ComputedRef<boolean> = computed(() => checkboxes.ready.value)
+
 </script>
 
 <template>
@@ -16,7 +18,7 @@ const totalChecked: ComputedRef<number> = computed(() => checkboxes.value.filter
     <div class="checkboxes">
       <input type="checkbox" v-for="(value, index) in checkboxes" v-model="checkboxes[index]"/>
     </div>
-    <p><strong>Total checked boxes: {{ totalChecked }} / {{ checkboxes.length }} </strong></p>
+    <p><strong>Total checked boxes: {{ totalChecked }} / {{ checkboxes.length }} </strong> <em>(Connection Ready: {{ isReady ? 'Yes' : 'No' }})</em></p>
     <p>
       Everyone visiting this website can check/uncheck these checkboxes in real-time. If everyone leaves, they reset.
     </p>

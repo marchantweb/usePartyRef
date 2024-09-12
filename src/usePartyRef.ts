@@ -16,6 +16,14 @@ interface PartyRefConfig<T> {
     host?: string
 }
 
+export interface PartyRef<T> extends Ref<T> {
+
+    /**
+     * The status of the connection to the PK server.
+     */
+    ready: Ref<boolean>
+}
+
 function isDevelopment(): boolean {
     // Vite
     // @ts-ignore
@@ -37,10 +45,11 @@ function isDevelopment(): boolean {
  * A Vue 3 ref that syncs in real-time with other clients using PartyKit.
  * @docs https://github.com/marchantweb/usePartyRef
  */
-export function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
+export function usePartyRef<T>(config: PartyRefConfig<T>): PartyRef<T> {
 
     let connection: PartySocket | null
-    const localData: Ref<UnwrapRef<T>> = ref(config.defaultValue) as Ref<UnwrapRef<T>>
+    let localData: PartyRef<UnwrapRef<T>> = ref(config.defaultValue) as PartyRef<UnwrapRef<T>>
+    localData.ready = ref(false)
     const lastReceivedData: Ref<any> | Ref<null> = ref(null)
 
     onBeforeMount(() => {
@@ -64,11 +73,17 @@ export function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
             if (key !== config.key) return
             if (localData.value === data) return
             if (!error) {
+                localData.ready.value = true
                 lastReceivedData.value = structuredClone(data)
                 localData.value = structuredClone(data)
                 return
             }
             console.error(error)
+        })
+
+        // Watch for the connection to close
+        connection.addEventListener("close", () => {
+            localData.ready.value = false
         })
 
         // Watch the local data for changes and send it to other clients
@@ -89,5 +104,5 @@ export function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
         }
     })
 
-    return localData as Ref<T>
+    return localData as PartyRef<T>
 }
