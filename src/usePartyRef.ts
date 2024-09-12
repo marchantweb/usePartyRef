@@ -1,4 +1,4 @@
-import {onMounted, onUnmounted, ref, Ref, UnwrapRef, watch} from "vue"
+import {onBeforeMount, onUnmounted, ref, Ref, UnwrapRef, watch} from "vue"
 import PartySocket from "partysocket"
 
 interface PartyRefConfig<T> {
@@ -43,7 +43,7 @@ export function usePartyRef<T>(config: PartyRefConfig<T>): Ref<T> {
     const localData: Ref<UnwrapRef<T>> = ref(config.defaultValue) as Ref<UnwrapRef<T>>
     const lastReceivedData: Ref<any> | Ref<null> = ref(null)
 
-    onMounted(() => {
+    onBeforeMount(() => {
 
         // Initialize the connection
         connection = new PartySocket({
