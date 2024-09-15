@@ -67,13 +67,17 @@ export function usePartyRef<T>(config: PartyRefConfig<T>): PartyRef<T> {
             data: config.defaultValue
         }))
 
+        // When the connection opens, set the ready status to true
+        connection.addEventListener("open", () => {
+            localData.ready.value = true
+        })
+
         // Listen for incoming updates from other clients
         connection.addEventListener("message", (event) => {
             const {key, data, error} = JSON.parse(event.data)
             if (key !== config.key) return
             if (localData.value === data) return
             if (!error) {
-                localData.ready.value = true
                 lastReceivedData.value = structuredClone(data)
                 localData.value = structuredClone(data)
                 return
